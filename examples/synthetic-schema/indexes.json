@@ -1,0 +1,12 @@
+[
+  { "schema": "demo", "table": "demo_work_orders", "indexName": "pk_work_orders", "columns": ["work_order_id"], "isUnique": true },
+  { "schema": "demo", "table": "demo_work_orders", "indexName": "ix_work_orders_created_at", "columns": ["created_at"], "isUnique": false },
+  { "schema": "demo", "table": "demo_assets", "indexName": "pk_assets", "columns": ["asset_id"], "isUnique": true },
+  { "schema": "demo", "table": "demo_locations", "indexName": "pk_locations", "columns": ["location_id"], "isUnique": true },
+  { "schema": "demo", "table": "demo_technicians", "indexName": "pk_technicians", "columns": ["technician_id"], "isUnique": true },
+  { "schema": "demo", "table": "demo_defects", "indexName": "pk_defects", "columns": ["defect_id"], "isUnique": true },
+  { "schema": "demo", "table": "demo_defects", "indexName": "ix_defects_created_at", "columns": ["created_at"], "isUnique": false },
+  { "schema": "demo", "table": "demo_inspections", "indexName": "pk_inspections", "columns": ["inspection_id"], "isUnique": true },
+  { "schema": "demo", "table": "demo_work_order_events", "indexName": "pk_work_order_events", "columns": ["event_id"], "isUnique": true },
+  { "schema": "demo", "table": "demo_work_order_events", "indexName": "ix_events_timestamp", "columns": ["event_timestamp"], "isUnique": false }
+]

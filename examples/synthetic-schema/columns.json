@@ -1,0 +1,39 @@
+[
+  { "schema": "demo", "table": "demo_work_orders", "name": "work_order_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_work_orders", "name": "asset_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_work_orders", "name": "location_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_work_orders", "name": "technician_id", "dataType": "bigint", "isNullable": true },
+  { "schema": "demo", "table": "demo_work_orders", "name": "status", "dataType": "varchar", "isNullable": false, "comment": "open | in_progress | completed | cancelled" },
+  { "schema": "demo", "table": "demo_work_orders", "name": "priority", "dataType": "varchar", "isNullable": false, "comment": "low | medium | high" },
+  { "schema": "demo", "table": "demo_work_orders", "name": "created_at", "dataType": "datetime", "isNullable": false },
+  { "schema": "demo", "table": "demo_work_orders", "name": "completed_at", "dataType": "datetime", "isNullable": true },
+
+  { "schema": "demo", "table": "demo_assets", "name": "asset_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_assets", "name": "asset_name", "dataType": "varchar", "isNullable": false },
+  { "schema": "demo", "table": "demo_assets", "name": "asset_type", "dataType": "varchar", "isNullable": false },
+  { "schema": "demo", "table": "demo_assets", "name": "location_id", "dataType": "bigint", "isNullable": false },
+
+  { "schema": "demo", "table": "demo_locations", "name": "location_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_locations", "name": "location_name", "dataType": "varchar", "isNullable": false },
+  { "schema": "demo", "table": "demo_locations", "name": "region", "dataType": "varchar", "isNullable": false },
+
+  { "schema": "demo", "table": "demo_technicians", "name": "technician_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_technicians", "name": "technician_name", "dataType": "varchar", "isNullable": false },
+  { "schema": "demo", "table": "demo_technicians", "name": "team", "dataType": "varchar", "isNullable": false },
+
+  { "schema": "demo", "table": "demo_defects", "name": "defect_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_defects", "name": "work_order_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_defects", "name": "defect_code", "dataType": "varchar", "isNullable": false },
+  { "schema": "demo", "table": "demo_defects", "name": "severity", "dataType": "varchar", "isNullable": false },
+  { "schema": "demo", "table": "demo_defects", "name": "created_at", "dataType": "datetime", "isNullable": false },
+
+  { "schema": "demo", "table": "demo_inspections", "name": "inspection_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_inspections", "name": "work_order_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_inspections", "name": "inspection_result", "dataType": "varchar", "isNullable": false },
+  { "schema": "demo", "table": "demo_inspections", "name": "inspected_at", "dataType": "datetime", "isNullable": false },
+
+  { "schema": "demo", "table": "demo_work_order_events", "name": "event_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_work_order_events", "name": "work_order_id", "dataType": "bigint", "isNullable": false },
+  { "schema": "demo", "table": "demo_work_order_events", "name": "event_type", "dataType": "varchar", "isNullable": false },
+  { "schema": "demo", "table": "demo_work_order_events", "name": "event_timestamp", "dataType": "datetime", "isNullable": false }
+]

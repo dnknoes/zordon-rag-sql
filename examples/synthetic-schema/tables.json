@@ -1,0 +1,9 @@
+[
+  { "schema": "demo", "name": "demo_work_orders", "approxRowCount": 1000, "risk": "medium", "comment": "One row per maintenance work order (SYNTHETIC demo data)." },
+  { "schema": "demo", "name": "demo_assets", "approxRowCount": 100, "risk": "low", "comment": "Physical assets that work orders are performed on." },
+  { "schema": "demo", "name": "demo_locations", "approxRowCount": 25, "risk": "low", "comment": "Sites/locations where assets live." },
+  { "schema": "demo", "name": "demo_technicians", "approxRowCount": 40, "risk": "low", "comment": "Technicians who perform work orders." },
+  { "schema": "demo", "name": "demo_defects", "approxRowCount": 600, "risk": "medium", "comment": "Defects recorded against work orders." },
+  { "schema": "demo", "name": "demo_inspections", "approxRowCount": 800, "risk": "medium", "comment": "Inspection results for work orders." },
+  { "schema": "demo", "name": "demo_work_order_events", "approxRowCount": 5000, "risk": "high", "comment": "Append-only event log for work orders (high-volume; always time-filter)." }
+]

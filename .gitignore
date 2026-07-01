@@ -1,0 +1,19 @@
+# Dependencies / build
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Local vector-store persistence / generated artifacts
+.data/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.swp

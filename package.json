@@ -1,0 +1,37 @@
+{
+  "name": "zordon-rag-sql",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "author": "dnknoes",
+  "description": "Zordon RAG SQL — a local-first, retrieval-grounded natural-language-to-SQL engine (synthetic portfolio showcase).",
+  "keywords": [
+    "rag",
+    "text-to-sql",
+    "nl-to-sql",
+    "retrieval-augmented-generation",
+    "embeddings",
+    "ollama",
+    "chroma",
+    "vector-search",
+    "sql-guardrails",
+    "typescript",
+    "local-first-ai"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "index:schema": "tsx scripts/index-synthetic-schema.ts",
+    "demo": "tsx scripts/run-demo-query.ts",
+    "eval": "tsx scripts/run-golden-eval.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^24.8.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

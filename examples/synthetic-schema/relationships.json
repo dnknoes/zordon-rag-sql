@@ -1,0 +1,9 @@
+[
+  { "kind": "foreign_key", "from": { "schema": "demo", "table": "demo_work_orders", "column": "asset_id" }, "to": { "schema": "demo", "table": "demo_assets", "column": "asset_id" }, "constraintName": "fk_wo_asset" },
+  { "kind": "foreign_key", "from": { "schema": "demo", "table": "demo_work_orders", "column": "location_id" }, "to": { "schema": "demo", "table": "demo_locations", "column": "location_id" }, "constraintName": "fk_wo_location" },
+  { "kind": "foreign_key", "from": { "schema": "demo", "table": "demo_work_orders", "column": "technician_id" }, "to": { "schema": "demo", "table": "demo_technicians", "column": "technician_id" }, "constraintName": "fk_wo_technician" },
+  { "kind": "foreign_key", "from": { "schema": "demo", "table": "demo_assets", "column": "location_id" }, "to": { "schema": "demo", "table": "demo_locations", "column": "location_id" }, "constraintName": "fk_asset_location" },
+  { "kind": "foreign_key", "from": { "schema": "demo", "table": "demo_defects", "column": "work_order_id" }, "to": { "schema": "demo", "table": "demo_work_orders", "column": "work_order_id" }, "constraintName": "fk_defect_wo" },
+  { "kind": "foreign_key", "from": { "schema": "demo", "table": "demo_inspections", "column": "work_order_id" }, "to": { "schema": "demo", "table": "demo_work_orders", "column": "work_order_id" }, "constraintName": "fk_inspection_wo" },
+  { "kind": "foreign_key", "from": { "schema": "demo", "table": "demo_work_order_events", "column": "work_order_id" }, "to": { "schema": "demo", "table": "demo_work_orders", "column": "work_order_id" }, "constraintName": "fk_event_wo" }
+]

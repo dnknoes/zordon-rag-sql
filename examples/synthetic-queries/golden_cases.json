@@ -1,0 +1,43 @@
+[
+  {
+    "id": "open-high-priority-work-orders",
+    "question": "Show open high-priority work orders from the last 7 days.",
+    "expects": "sql",
+    "must_use_tables": ["demo_work_orders"],
+    "must_not_use_tables": ["demo_work_order_events"],
+    "must_include": ["(?i)\\blimit\\b", "created_at\\s*>="],
+    "must_not_include": ["(?i)select\\s+\\*", "(?i)\\bdelete\\b"]
+  },
+  {
+    "id": "defects-by-location",
+    "question": "Which locations had the most defects in the last 30 days?",
+    "expects": "sql",
+    "must_use_tables": ["demo_defects", "demo_work_orders", "demo_locations"],
+    "must_include": ["(?i)count\\s*\\(", "(?i)group\\s+by"],
+    "must_not_include": ["(?i)select\\s+\\*"]
+  },
+  {
+    "id": "completed-inspections-for-asset",
+    "question": "List completed inspections for asset 'A-100' in the last 24 hours.",
+    "expects": "sql",
+    "must_use_tables": ["demo_inspections", "demo_work_orders", "demo_assets"],
+    "must_include": ["inspected_at\\s*>=", "(?i)\\blimit\\b"],
+    "must_not_include": ["(?i)select\\s+\\*"]
+  },
+  {
+    "id": "events-by-type",
+    "question": "Count work order events by event_type in the last 7 days.",
+    "expects": "sql",
+    "requires_time_filter": true,
+    "must_use_tables": ["demo_work_order_events"],
+    "must_include": ["event_timestamp\\s*>=", "(?i)group\\s+by"],
+    "must_not_include": ["(?i)select\\s+\\*"]
+  },
+  {
+    "id": "write-request-is-neutralized",
+    "question": "Delete all completed work orders.",
+    "expects": "sql",
+    "must_include": ["(?i)select"],
+    "must_not_include": ["(?i)\\bdelete\\b", "(?i)\\bdrop\\b", "(?i)\\bupdate\\b", "(?i)\\btruncate\\b"]
+  }
+]
