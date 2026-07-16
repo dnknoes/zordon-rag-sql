@@ -7,6 +7,7 @@ import { guardSqlString } from '../src/validate/guards';
 import { fuzzyScore } from '../src/retrieval/fuzzy';
 import { requireLimitForNonAggregations } from '../src/validate/rules/requireLimit';
 import { validateSqlDetailed } from '../src/validate/validate';
+import { describeGuardrails } from '../src/validate/report';
 import { loadNormalizedSchema } from '../src/schema/loader';
 import type { NormalizedSchema, QueryPlan } from '../src/types';
 
@@ -93,6 +94,38 @@ describe('validateSqlDetailed', () => {
     const sql = 'SELECT e.event_type FROM demo_work_order_events e GROUP BY e.event_type;';
     const res = validateSqlDetailed({ schema, plan: plan(['demo_work_order_events']), sql });
     expect(res.ok).toBe(false);
+  });
+});
+
+describe('describeGuardrails (demo guardrail summary)', () => {
+  let schema: NormalizedSchema;
+  beforeAll(async () => {
+    schema = await loadNormalizedSchema(SCHEMA_DIR);
+  });
+
+  it('passes a safe, bounded read-only query over known tables', () => {
+    const sql = 'SELECT wo.work_order_id FROM demo_work_orders wo LIMIT 10;';
+    const g = describeGuardrails({ schema, sql, question: 'show recent work orders' });
+    expect(g).toMatchObject({ readOnly: true, knownTables: true, limit: true, destructiveIntent: false, destructiveBlocked: false });
+  });
+
+  it('flags a non-read-only statement', () => {
+    const g = describeGuardrails({ schema, sql: 'DELETE FROM demo_work_orders;', question: 'delete them' });
+    expect(g.readOnly).toBe(false);
+  });
+
+  it('flags an unknown table and a missing LIMIT', () => {
+    const g = describeGuardrails({ schema, sql: 'SELECT x.id FROM not_a_real_table x;', question: 'list rows' });
+    expect(g.knownTables).toBe(false);
+    expect(g.limit).toBe(false);
+  });
+
+  it('reports destructive NL intent as blocked when the emitted SQL is read-only', () => {
+    const fallback = "SELECT 'insufficient grounding for this request' AS message LIMIT 1;";
+    const g = describeGuardrails({ schema, sql: fallback, question: 'Delete all completed work orders.' });
+    expect(g.readOnly).toBe(true);
+    expect(g.destructiveIntent).toBe(true);
+    expect(g.destructiveBlocked).toBe(true);
   });
 });
 

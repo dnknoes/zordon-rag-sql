@@ -135,9 +135,12 @@ mandatory `LIMIT` on non-aggregations. See [docs/sql-guardrails.md](docs/sql-gua
 - **Chroma** for the vector store.
 - No cloud calls, no secrets, no production database. See [`.env.example`](.env.example).
 
-## 14. Running the synthetic demo
+## 14. Demo modes
 
-Offline (no services required):
+Both demos run against the **same synthetic schema** and the **same guardrails**.
+The only difference is who plays the planner/generator model.
+
+### Offline deterministic demo
 
 ```bash
 npm run demo                       # canned sample questions
@@ -145,11 +148,42 @@ npm run demo -- "your question"    # ask your own
 DEBUG=1 npm run demo               # include retrieval/plan debug
 ```
 
-Real stack (optional — needs Ollama + Chroma running):
+Uses a deterministic **mock LLM** (and an in-memory vector store), so the demo,
+eval, and tests are stable and need no external services.
+
+### Live local Ollama demo
+
+```bash
+npm run demo:ollama                     # 3 synthetic questions via local Ollama
+npm run demo:ollama -- "your question"  # ask your own
+```
+
+Runs the real pipeline with a **local [Ollama](https://ollama.com) model** as the
+planner/generator, over the same synthetic schema. For each question it prints the
+retrieved schema cards, the provider/model, the raw model output, the parsed plan,
+the validated SQL, and a per-check guardrail summary — so the AI step is visible
+end-to-end. Requires Ollama running locally with the model pulled:
+
+```bash
+ollama pull qwen2.5-coder:7b        # or set OLLAMA_MODEL to any installed model
+```
+
+Configure via [`.env.example`](.env.example) (`OLLAMA_URL`, `OLLAMA_MODEL`). If
+Ollama is unreachable the demo exits gracefully and points you back to
+`npm run demo`. Even in this mode:
+
+- **No real DB connection** — SQL is generated and validated, never executed.
+- **No production data** — synthetic `demo_*` schema only.
+- **No credentials** — local Ollama only; no API keys or tokens.
+- **Model output is untrusted** — it still passes the full validation/guardrail
+  pipeline before it is shown, and write requests are neutralized to a safe
+  read-only fallback.
+
+Real vector store (optional — needs Chroma running):
 
 ```bash
 npm run index:schema   # embed synthetic cards into Chroma
-# then wire createOllamaAdapter + ChromaVectorStore instead of the offline stand-ins
+# then wire ChromaVectorStore instead of the in-memory store
 ```
 
 ## 15. What was sanitized

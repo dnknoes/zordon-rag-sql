@@ -24,6 +24,7 @@
   "scripts": {
     "index:schema": "tsx scripts/index-synthetic-schema.ts",
     "demo": "tsx scripts/run-demo-query.ts",
+    "demo:ollama": "tsx scripts/run-ollama-demo.ts",
     "eval": "tsx scripts/run-golden-eval.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"

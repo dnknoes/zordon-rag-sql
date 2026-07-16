@@ -50,6 +50,28 @@ the right type (arrays forced to string arrays, non-string `timeWindow`/`grain`
 nulled, dialect constrained to the allowed enum). `validatePlan` is a stricter
 gate used where a hard contract is required.
 
+## Mock planner vs. live Ollama planner (demo modes)
+
+The planner/generator is a pluggable `LlmAdapter`, so the *same* prompts, parser,
+and validator run regardless of which model answers:
+
+- **Deterministic mock** ([`src/llm/mockLlm.ts`](src/llm/mockLlm.ts)) — routes on
+  the question and returns a canned plan (JSON mode) or SQL. Used by `npm run demo`,
+  `npm run eval`, and the tests so behavior is reproducible with no external model.
+- **Live Ollama** ([`src/llm/ollamaAdapter.ts`](src/llm/ollamaAdapter.ts)) — a
+  local model emits the plan JSON and the SQL. Wired by
+  [`scripts/run-ollama-demo.ts`](scripts/run-ollama-demo.ts) (`npm run demo:ollama`),
+  which prints the raw model output, the parsed plan, the validated SQL, and a
+  per-check guardrail summary so the boundary is visible.
+
+The parser/validator boundary is the contract between them: raw model text is
+**untrusted** and only becomes a plan (then SQL) after `parsePlannerJsonOrThrow` +
+`normalizePlan` and the full validator. **Invalid model output fails closed** — a
+non-JSON planner response throws with a truncated preview (no SQL generated), and a
+non-read-only generator response is neutralized to a safe fallback `SELECT`. The
+live demo cannot produce anything the offline demo couldn't, because both share the
+same downstream guardrails.
+
 ## Ambiguity handling
 
 - **Alias store** ([`src/domain/aliasStore.ts`](src/domain/aliasStore.ts)) is the

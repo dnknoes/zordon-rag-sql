@@ -16,6 +16,25 @@ data, or identifiers were copied.
 - **No real database connection is included.** The engine generates and validates
   SQL; it does not execute it. There is no DB executor.
 
+## The live Ollama demo is local-only
+
+`npm run demo:ollama` ([`scripts/run-ollama-demo.ts`](scripts/run-ollama-demo.ts))
+swaps the deterministic mock for a real **local** model, and nothing else changes:
+
+- **Local-only.** It talks to a local Ollama server (`OLLAMA_URL`, default
+  `http://localhost:11434`) and makes no other network calls. **No external API,
+  no API key, no tokens** — Ollama needs none, and none are read.
+- **No real DB, no real schema.** Retrieval and generation run over the same
+  synthetic `demo_*` schema; SQL is still only generated and validated, never run.
+- **No credentials.** The demo reads only `OLLAMA_URL`/`OLLAMA_MODEL`; `.env`/
+  `.env.local` are git-ignored and never required.
+- **Model output is treated as untrusted.** The local model's plan and SQL pass the
+  exact same fail-closed validator as the offline demo before anything is shown.
+  Invalid JSON fails closed (no SQL), and write/destructive requests are neutralized
+  to a safe read-only fallback. A live model cannot bypass the guardrails.
+- **Graceful when absent.** If Ollama isn't reachable the demo prints a clear notice
+  and exits, pointing back to the offline `npm run demo`.
+
 ## Runtime safety properties
 
 The engine is **read-only by construction**. Generated SQL must pass a layered,
