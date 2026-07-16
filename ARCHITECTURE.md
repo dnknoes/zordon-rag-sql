@@ -9,20 +9,20 @@ unsafe.
 
 ```mermaid
 flowchart TD
-  Q[User question] --> A[Alias resolution\n(evidence-based)]
-  A -->|needs clarification| CL[Return clarification]
-  A --> R[Retrieve schema cards + examples\n(typed vector search, fuzzy re-rank, budget)]
-  R --> W{Strong enough\ngrounding?}
+  Q["User question"] --> A["Alias resolution<br/>(evidence-based)"]
+  A -->|needs clarification| CL["Return clarification"]
+  A --> R["Retrieve schema cards + examples<br/>(typed vector search, fuzzy re-rank, budget)"]
+  R --> W{"Strong enough<br/>grounding?"}
   W -->|no, strict| CL
-  W -->|yes| E[Resolve entities\n(tables/columns, confidence, literals)]
-  E --> P[Plan\nLLM -> strict JSON plan]
-  P --> G[Generate SQL\nLLM -> one read-only statement]
-  G --> V[Validate\nguard + dialect + schema + joins + time + LIMIT]
-  V -->|ok| OUT[Safe read-only SQL]
-  V -->|invalid| RP[Repair once]
-  RP --> V2[Re-validate]
+  W -->|yes| E["Resolve entities<br/>(tables/columns, confidence, literals)"]
+  E --> P["Plan<br/>LLM -> strict JSON plan"]
+  P --> G["Generate SQL<br/>LLM -> one read-only statement"]
+  G --> V["Validate<br/>guard + dialect + schema + joins + time + LIMIT"]
+  V -->|ok| OUT["Safe read-only SQL"]
+  V -->|invalid| RP["Repair once"]
+  RP --> V2["Re-validate"]
   V2 -->|ok| OUT
-  V2 -->|still invalid| ERR[Fail-closed error]
+  V2 -->|still invalid| ERR["Fail-closed error"]
 ```
 
 ## Module map
@@ -64,20 +64,20 @@ src/
 
 ## Data flow
 
-1. **Cards** â€” the schema is rendered into compact, typed cards
+1. **Cards** — the schema is rendered into compact, typed cards
    (`table_card`, `column_card`, `fk_edge`, `index_hint`, `example_query`,
    `domain_note`) and embedded into the vector store. The raw schema is never
    sent to the model.
-2. **Context** â€” a question is embedded once; each card type is queried
+2. **Context** — a question is embedded once; each card type is queried
    separately with its own top-k, re-ranked with a deterministic fuzzy score,
    deduped (examples by join-family), and merged under a doc/char budget with
    schema truth prioritized over examples. FK-graph expansion adds join evidence.
-3. **Entities** â€” tables/columns are scored across schema, vector, and graph
+3. **Entities** — tables/columns are scored across schema, vector, and graph
    signals; quoted literals are tagged low-confidence.
-4. **Plan** â€” the model emits a JSON plan grounded in a capped, entity-scoped
+4. **Plan** — the model emits a JSON plan grounded in a capped, entity-scoped
    schema slice + retrieved cards.
-5. **SQL** â€” the model emits one statement; cleanup isolates a single statement.
-6. **Validation** â€” the statement must pass every guardrail or it is not returned.
+5. **SQL** — the model emits one statement; cleanup isolates a single statement.
+6. **Validation** — the statement must pass every guardrail or it is not returned.
 
 ## Why a synthetic schema
 
@@ -91,4 +91,4 @@ all real schema, data, and identifiers out of the repo.
 - No real database executor (generation + validation only).
 - No production schema, queries, credentials, or hostnames.
 - No UI / API server (CLI-first; the engine is a library).
-- No BM25/keyword retrieval variant (kept as a possible separate showcase).
+- No BM25/keyword retrieval variant (kept as a separate showcase).
